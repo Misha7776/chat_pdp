@@ -30,6 +30,7 @@ gem 'redis', '~> 4.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
+gem 'sidekiq', '~> 5.1', '>= 5.1.3'
 
 gem 'apitome', '0.2.0'
 gem 'rspec_api_documentation', '6.1.0'
@@ -52,6 +53,7 @@ group :development do
   gem 'rubycritic', '~> 3.4'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'rack', github: 'rack/rack', ref: 'f690bb71425aa31d7b9b3113829af773950d8ab5'
 end
 
 group :test do

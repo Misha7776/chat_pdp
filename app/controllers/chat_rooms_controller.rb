@@ -1,74 +1,61 @@
+# frozen_string_literal: true
+
 class ChatRoomsController < ApplicationController
-  before_action :set_chat_room, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_chat_room, only: %i[show edit update destroy]
 
-  # GET /chat_rooms
-  # GET /chat_rooms.json
   def index
-    @chat_rooms = ChatRoom.all
+    @chat_rooms = ChatRoom.all.includes(:chatable).by_user(current_user)
   end
 
-  # GET /chat_rooms/1
-  # GET /chat_rooms/1.json
-  def show
-  end
+  def show; end
 
-  # GET /chat_rooms/new
   def new
-    @chat_room = ChatRoom.new
+    @chat_room = current_user.chat_rooms.new
+    @users = User.where.not(id: current_user.id)
   end
 
-  # GET /chat_rooms/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /chat_rooms
-  # POST /chat_rooms.json
   def create
-    @chat_room = ChatRoom.new(chat_room_params)
-
+    binding.pry
+    @chat_room = Mutators::ChatRooms::Create.call(current_user, chat_room_params)
     respond_to do |format|
-      if @chat_room.save
+      if @chat_room.valid?
         format.html { redirect_to @chat_room, notice: 'Chat room was successfully created.' }
-        format.json { render :show, status: :created, location: @chat_room }
       else
         format.html { render :new }
-        format.json { render json: @chat_room.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /chat_rooms/1
-  # PATCH/PUT /chat_rooms/1.json
   def update
+    # Mutators::ChatRooms::Update.call(@chat_room, chat_room_params)
     respond_to do |format|
       if @chat_room.update(chat_room_params)
         format.html { redirect_to @chat_room, notice: 'Chat room was successfully updated.' }
-        format.json { render :show, status: :ok, location: @chat_room }
       else
         format.html { render :edit }
-        format.json { render json: @chat_room.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /chat_rooms/1
-  # DELETE /chat_rooms/1.json
   def destroy
+    # Mutators::ChatRooms::Destroy.call(@chat_room)
     @chat_room.destroy
     respond_to do |format|
       format.html { redirect_to chat_rooms_url, notice: 'Chat room was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_chat_room
-      @chat_room = ChatRoom.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def chat_room_params
-      params.require(:chat_room).permit(:name, :chatable_id, :chatable_type)
-    end
+  def set_chat_room
+    @chat_room = ChatRoom.find(params[:id])
+  end
+
+  def chat_room_params
+    params.require(:chat_room).permit(:name)
+          .merge!(user_ids: params[:user_ids] + [current_user.id])
+  end
 end

@@ -1,27 +1,32 @@
-<%= form_with(model: chat_room, local: true) do |form| %>
-  <% if chat_room.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(chat_room.errors.count, "error") %> prohibited this chat_room from being saved:</h2>
+<div class="row">
+  <div class="col-2 pull-left">
+    <%= form_with(model: chat_room, local: true) do |form| %>
+      <% if chat_room.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(chat_room.errors.count, "error") %> prohibited this chat_room from being saved:</h2>
 
-      <ul>
-        <% chat_room.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% chat_room.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+      <div class="m-1">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="m-1">
+        <%= form.label 'Users' %>
+        <%= select_tag 'user_ids[]', options_for_select(users.map { |u| [u.email, u.id] }, users.pluck(:id)), multiple: true, size: 10 %>
+      </div>
+
+      <div class="m-1">
+        <%= form.button "Submit", class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+
   </div>
-
-  <div class="field">
-    <%= form.label :chatable_id %>
-    <%= form.text_field :chatable_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

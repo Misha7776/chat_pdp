@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Users</h1>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Email</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @users.each do |user| %>
+    <tr scope="col">
+      <td><%= user.email %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

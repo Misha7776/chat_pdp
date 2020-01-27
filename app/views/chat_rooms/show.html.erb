@@ -1,14 +1,37 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @chat_room.name %>
-</p>
+<div class="row">
+  <div class="col-12" style="display: -webkit-inline-box;">
+    <h2>
+      <strong>Chat Name:</strong>
+      <%= @chat_room.name %>
+    </h2>
 
-<p>
-  <strong>Chatable:</strong>
-  <%= @chat_room.chatable_id %>
-</p>
+    <%= link_to 'Edit', edit_chat_room_path(@chat_room), class: 'btn btn-warning' %>
+    <%= link_to 'Back', chat_rooms_path, class: 'btn btn-danger' %>
+  </div>
 
-<%= link_to 'Edit', edit_chat_room_path(@chat_room) %> |
-<%= link_to 'Back', chat_rooms_path %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="messages-list">
+        <ul id="messages" data-chat-room-id="<%= @chat_room.id %>">
+          <% @chat_room.chat_messages.each do |message| %>
+            <li>
+              <div class="row">
+                <div class="<%= current_user.id == message.user_id ? 'message-sent' : 'message-received' %>">
+                  <%= message.body %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <form class="new_message">
+        <input name="chat_room_id" type="hidden" value="<%= @chat_room.id %>">
+        <input name="user_id" type="hidden" value="<%= current_user.id %>">
+        <textarea name="body" class="form-control"></textarea>
+        <input type="submit" class="btn btn-success" value="Send">
+      </form>
+    </div>
+  </div>
+</div>

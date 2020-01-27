@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  root 'chat_rooms#index'
   resources :chat_messages
   devise_for :users
+  resources :users, only: :index
   resources :chat_rooms
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  mount ActionCable.server, at: '/cable'
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 end

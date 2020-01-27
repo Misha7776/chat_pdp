@@ -10,6 +10,16 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="">
+      <%= link_to  'Home', root_path, class: 'btn btn-primary' %>
+      <% if user_signed_in? %>
+        <%= link_to  'All Users', users_path, class: 'btn btn-primary' %>
+        <%= link_to  'All Chats', chat_rooms_path, class: 'btn btn-primary' %>
+        <%= link_to  'Logout', destroy_user_session_path, class: 'btn btn-primary', method: :delete %>
+      <% end %>
+    </div>
+    <div class='center-block'>
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,4 +1,5 @@
 class ChatMessagesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_chat_message, only: [:show, :edit, :update, :destroy]
 
   # GET /chat_messages

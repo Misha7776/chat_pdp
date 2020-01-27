@@ -2,28 +2,31 @@
 
 <h1>Chat Rooms</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Chatable</th>
-      <th colspan="3"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Users</th>
+      <th scope="col" colspan="3">Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @chat_rooms.each do |chat_room| %>
-      <tr>
+      <tr scope="row">
         <td><%= chat_room.name %></td>
-        <td><%= chat_room.chatable_id %></td>
+        <td><%= chat_room.user_ids.length %></td>
         <td><%= link_to 'Show', chat_room %></td>
-        <td><%= link_to 'Edit', edit_chat_room_path(chat_room) %></td>
-        <td><%= link_to 'Destroy', chat_room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if chat_room.chatable_id == current_user.id %>
+          <td><%= link_to 'Edit', edit_chat_room_path(chat_room) %></td>
+          <td><%= link_to 'Destroy', chat_room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<!--<br>-->
 
 <%= link_to 'New Chat Room', new_chat_room_path %>
+
