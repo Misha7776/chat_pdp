@@ -13,8 +13,6 @@ module Mutators
 
     def call
       record.update(params)
-
-      record
     end
 
     protected

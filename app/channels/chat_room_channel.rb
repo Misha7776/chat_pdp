@@ -16,7 +16,7 @@ class ChatRoomChannel < ApplicationCable::Channel
   private
 
   def chat_member?(data)
-    ChatRoom.find(data['chat_room_id']).user_ids.include?(data['user_id'].to_i)
+    ChatRoom.find(data['chat_room_id']).member_ids.include?(data['user_id'].to_i)
   end
 
   def chat_message_params(data)

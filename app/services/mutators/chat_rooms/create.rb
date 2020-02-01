@@ -6,6 +6,7 @@ module Mutators
       def initialize(chatable, params)
         @chatable = chatable
         @params = params
+        @params[:member_ids] << chatable.id
       end
 
       def self.call(chatable, params)

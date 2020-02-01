@@ -10,7 +10,7 @@ class Sockets::Base
   end
 
   def call
-    broadcast(stream, message: render_message)
+    broadcast(stream, resource: resource )
   end
 
   private

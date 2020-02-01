@@ -1,37 +1,55 @@
 <p id="notice"><%= notice %></p>
+<div class="container">
+  <div class="row">
+    <div class="col-12" style="display: -webkit-inline-box;">
+      <h2>
+        <strong>Chat Name:</strong>
+        <%= @chat_room.name %>
+      </h2>
 
-<div class="row">
-  <div class="col-12" style="display: -webkit-inline-box;">
-    <h2>
-      <strong>Chat Name:</strong>
-      <%= @chat_room.name %>
-    </h2>
+      <%= link_to 'Edit', edit_chat_room_path(@chat_room), class: 'btn btn-warning' %>
+      <%= link_to 'Back', chat_rooms_path, class: 'btn btn-danger' %>
+    </div>
 
-    <%= link_to 'Edit', edit_chat_room_path(@chat_room), class: 'btn btn-warning' %>
-    <%= link_to 'Back', chat_rooms_path, class: 'btn btn-danger' %>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="messages-list">
-        <ul id="messages" data-chat-room-id="<%= @chat_room.id %>">
-          <% @chat_room.chat_messages.each do |message| %>
-            <li>
-              <div class="row">
-                <div class="<%= current_user.id == message.user_id ? 'message-sent' : 'message-received' %>">
-                  <%= message.body %>
+    <div class="col-12">
+      <div class="panel-body">
+        <div class="messages-list" id="chat">
+          <ul class="row" id="messages" data-chat-room-id="<%= @chat_room.id %>">
+            <% @chat_room.chat_messages.each do |message| %>
+              <li class="col-12" style="<%= message_style(current_user, message)%>">
+                <div>
+                  <div class="<%= message_class(current_user, message) %>">
+                    <%= message.body %>
+                  </div>
                 </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <form class="new_message">
+          <input name="chat_room_id" type="hidden" value="<%= @chat_room.id %>">
+          <input name="user_id" type="hidden" value="<%= current_user.id %>">
+          <textarea name="body" class="form-control"></textarea>
+          <input type="submit" class="btn btn-success m-2" value="Send">
+        </form>
       </div>
-      <form class="new_message">
-        <input name="chat_room_id" type="hidden" value="<%= @chat_room.id %>">
-        <input name="user_id" type="hidden" value="<%= current_user.id %>">
-        <textarea name="body" class="form-control"></textarea>
-        <input type="submit" class="btn btn-success" value="Send">
-      </form>
     </div>
   </div>
 </div>
+
+<script>
+    var current_user_id = <%= current_user.id %>;
+  $(document).ready(function() {
+      var objDiv = document.getElementById("chat");
+      objDiv.scrollTop = objDiv.scrollHeight;
+      $('input[type="submit"]').attr('disabled', true);
+
+      $('textarea[name="body"]').on('keyup', function() {
+          if($(this).val().length == 0) {
+              $('input[type="submit"]').attr('disabled', true);
+          } else {
+              $('input[type="submit"]').attr('disabled', false);
+          }
+      });
+  });
+</script>

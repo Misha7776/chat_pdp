@@ -53,7 +53,7 @@ group :development do
   gem 'rubycritic', '~> 3.4'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rack', github: 'rack/rack', ref: 'f690bb71425aa31d7b9b3113829af773950d8ab5'
+  # gem 'rack', github: 'rack/rack', ref: 'f690bb71425aa31d7b9b3113829af773950d8ab5'
 end
 
 group :test do

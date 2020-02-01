@@ -15,7 +15,7 @@
     <% @chat_rooms.each do |chat_room| %>
       <tr scope="row">
         <td><%= chat_room.name %></td>
-        <td><%= chat_room.user_ids.length %></td>
+        <td><%= chat_room.members.length %></td>
         <td><%= link_to 'Show', chat_room %></td>
         <% if chat_room.chatable_id == current_user.id %>
           <td><%= link_to 'Edit', edit_chat_room_path(chat_room) %></td>
